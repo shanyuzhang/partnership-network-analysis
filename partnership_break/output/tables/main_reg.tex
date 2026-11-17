@@ -1,0 +1,40 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\toprule
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+            &\multicolumn{1}{c}{Break}&\multicolumn{1}{c}{Break}&\multicolumn{1}{c}{Break}&\multicolumn{1}{c}{Break}\\
+\midrule
+Post \(\times\) Impact&      0.0029         &      0.0104         &      0.0010         &      0.0024         \\
+            &    (0.0038)         &    (0.0131)         &    (0.0041)         &    (0.0105)         \\
+US partner  &                     &                     &                     &      0.0045         \\
+            &                     &                     &                     &    (0.0051)         \\
+US \(\times\) Post&                     &                     &                     &      0.0022         \\
+            &                     &                     &                     &    (0.0078)         \\
+US \(\times\) Tariff&                     &                     &                     &     -0.0081         \\
+            &                     &                     &                     &    (0.0069)         \\
+Post \(\times\) Impact \(\times\) Size&                     &      0.0034         &                     &                     \\
+            &                     &    (0.0032)         &                     &                     \\
+Post \(\times\) Impact \(\times\) Lev&                     &     -0.0344         &                     &                     \\
+            &                     &    (0.0316)         &                     &                     \\
+Post \(\times\) Impact \(\times\) ROA&                     &     -0.2222\sym{***}&                     &                     \\
+            &                     &    (0.0558)         &                     &                     \\
+Post \(\times\) Impact \(\times\) ATO&                     &     -0.0046         &                     &                     \\
+            &                     &    (0.0099)         &                     &                     \\
+Post \(\times\) Impact \(\times\) Growth&                     &     -0.0083         &                     &                     \\
+            &                     &    (0.0103)         &                     &                     \\
+Constant    &      0.0322\sym{***}&      0.0322\sym{***}&      0.0355\sym{***}&      0.0350\sym{***}\\
+            &    (0.0015)         &    (0.0015)         &    (0.0004)         &    (0.0007)         \\
+\midrule
+Firm \(\times\) month FE&          No         &          No         &         Yes         &         Yes         \\
+Observations&      42,332         &      42,332         &      28,579         &      28,579         \\
+Treated pairs&         418         &         418         &         345         &         345         \\
+R\(^2\)     &      0.0000         &      0.0004         &      0.6006         &      0.6007         \\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize A-share firm x foreign partner x month, 2017m1-2019m12. Standard errors clustered by A-share firm.}\\
+\multicolumn{5}{l}{\footnotesize Column (2) controls: Post \(\times\) Impact \(\times\) 2017 Size, Lev (debt/assets), ROA, ATO and Growth of the A-share firm,}\\
+\multicolumn{5}{l}{\footnotesize winsorized at 1\%/99\% within the sample.}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}

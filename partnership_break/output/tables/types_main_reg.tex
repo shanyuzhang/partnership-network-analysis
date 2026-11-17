@@ -1,0 +1,30 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{lcccc}
+\toprule
+Type & (1) & (2) & (3) & (4) \\
+\midrule
+All partnerships & 0.0029 & 0.0104 & 0.0010 & 0.0024 \\
+ & (0.0038) & (0.0131) & (0.0041) & (0.0105) \\
+ & 42,332 / 418 & 42,332 / 418 & 28,579 / 345 & 28,579 / 345 \\
+\addlinespace
+Knowledge (K) & -0.0056 & 0.0277\sym{*} & 0.0011 & 0.0137 \\
+ & (0.0052) & (0.0154) & (0.0061) & (0.0120) \\
+ & 18,896 / 263 & 18,896 / 263 & 13,090 / 211 & 13,090 / 211 \\
+\addlinespace
+Capital (C) & 0.0083 & -0.0293 & 0.0058 & -0.0346 \\
+ & (0.0051) & (0.0194) & (0.0065) & (0.0297) \\
+ & 22,860 / 152 & 22,860 / 152 & 11,823 / 100 & 11,823 / 100 \\
+\addlinespace
+Market (M) & -0.0055 & 0.0200 & 0.0000 &  \\
+ & (0.0121) & (0.0537) & (0.0199) &  \\
+ & 1,937 / 33 & 1,937 / 33 & 1,229 / 19 &  \\
+\midrule
+Controls (Post \(\times\) Impact \(\times\) X) & No & Yes & No & No \\
+Firm \(\times\) month FE & No & No & Yes & Yes \\
+US, US \(\times\) Post, US \(\times\) Tariff & No & No & No & Yes \\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize Coefficient on Post \(\times\) Impact; SE clustered by A-share firm in parentheses; third row: observations / treated pairs.}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}
