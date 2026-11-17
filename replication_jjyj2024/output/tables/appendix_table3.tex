@@ -1,0 +1,19 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\toprule
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+            &\multicolumn{1}{c}{Break1}&\multicolumn{1}{c}{Break2}&\multicolumn{1}{c}{Break3}&\multicolumn{1}{c}{Break}\\
+\midrule
+Post \(\times\) Impact&      0.1196\sym{***}&      0.0890\sym{***}&      0.0696\sym{***}&      0.1036\sym{***}\\
+            &    (0.0271)         &    (0.0237)         &    (0.0224)         &    (0.0386)         \\
+\midrule
+Observations&      83,465         &      83,465         &      83,465         &      59,439         \\
+R\(^2\)     &       0.119         &       0.101         &       0.095         &       0.141         \\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize Controls (Post x X) included; pair FE and year-month FE; SE clustered by pair.}\\
+\multicolumn{5}{l}{\footnotesize Column (4): sample up to 2019m3 (the paper says it excludes COVID effects; the exact rule is not stated).}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}
