@@ -1,10 +1,12 @@
 # 数据说明
 
-数据不放在 GitHub 上。清洗好的数据在 Google Drive；原始数据是商业授权数据库，需要自己有权限下载。
+数据不放在 GitHub 上：清洗好的数据在 Google Drive，原始数据按下面的路径放好即可。
 
 ## 清洗好的数据（Google Drive）
 
-**链接：（待补）**
+**链接：** https://drive.google.com/drive/folders/1-Y3PqGCeSEIBhMWvMW64X74ipz_6Uw58
+
+（它在 Drive 文件夹 `partnership-network-analysis` 下，与本仓库的文件夹一一对应：<https://drive.google.com/drive/folders/1hjU2et_KQtK56xQwNDDA7rtqlkjIK7-0>）
 
 把下载的文件放进本文件夹的 `data/clean/`，再把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，运行 `do code/run_all.do`，就只跑 04–06（表 2、附表 3、图 1、附图 1）。
 
@@ -12,11 +14,13 @@
 |---|---|---:|---|
 | `analysis_sample.dta` | 回归样本：2017m1–2019m12，每对企业只看 2017 年起的第一段关系，控制变量已在样本上缩尾 | 83,674 × 41 | 04、06 |
 | `panel_monthly.dta` | 2017m1–2020m6 的关系对 × 月面板，已做全部样本筛选，不限第一段 | 103,834 × 31 | 05 |
+| `entity.dta` | FactSet 公司信息，每家公司一行：名称、国家、ISIN、CUSIP 前 8 位、A 股代码、注销季度 | 662,631 × 9 | 02 |
 | `successor.dta` | 换 ID 对照表：旧 company_id → 新 company_id | 13,011 × 2 | 03 |
 | `tariff.dta` | 美国加征关税的 SIC 行业及首次生效的月份 | 436 × 2 | 03 |
 | `st_year.dta` | A 股企业 × 年（2016–2019）：当年是否有 ST 交易日 | 13,835 × 3 | 03 |
+| `firm.dta` | 每家 FactSet 公司一行：A 股代码、国家、SIC、2017 年 5 项财务指标、CSMAR 信息 | 662,631 × 13 | 03 |
 
-后三个是清洗的中间结果，放上来方便核对，只跑回归用不到。另外两个中间文件 `entity.dta`、`firm.dta`（FactSet 公司信息和 Worldscope 财务数据的整理）没有上传，需要时用 01、02 从原始数据生成。
+前两个是分析用的数据。后五个是 01、02 生成的中间文件，放上来方便核对清洗的每一步，只跑回归用不到；其中 `entity.dta`、`firm.dta` 覆盖 FactSet 的全部 662,631 家公司，所以比较大。
 
 ### `analysis_sample.dta` 的变量
 
@@ -48,7 +52,3 @@
 | `data/raw/other/` | `TRD_Co.csv` | CSMAR 公司文件 | `Stkcd`、`Listdt`、`Nnindcd`、`Markettype` |
 | `data/raw/other/` | `TRD_Dalyr.csv`、`TRD_Dalyr1.csv`、`TRD_Dalyr2.csv`、`TRD_Dalyr3.csv` | CSMAR 日个股回报率文件，2016–2019 年 | `Stkcd`、`Trddt`、`Trdsta` |
 | `data/raw/other/` | `sic_code.csv` | 美国四轮加征关税涉及的 4 位 SIC 行业及生效日期，与论文附表 1 一致 | `effective_date`、`sic_code` |
-
-## 授权
-
-FactSet Revere、Worldscope、CSMAR 都是商业授权数据库。清洗后的数据里有来自这些数据库的信息，把 Google Drive 链接分享给别人之前，请先确认所在机构的授权是否允许。
