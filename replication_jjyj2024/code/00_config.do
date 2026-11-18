@@ -14,8 +14,8 @@ version 17
 set more off
 set varabbrev off
 
-* 本文件夹（replication_jjyj2024）的位置：默认是当前工作目录
-if `"$REPO"' == "" global REPO "`c(pwd)'"
+* 本文件夹（replication_jjyj2024）的位置：当前工作目录（每次都重设，免得同一个 Stata 窗口先跑过别的文件夹时写错地方）
+global REPO "`c(pwd)'"
 
 * ---- 数据和输出的位置 ----
 global RAW_FACTSET "$REPO/data/raw/factset"   // FactSet Revere

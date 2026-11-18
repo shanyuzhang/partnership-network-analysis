@@ -12,8 +12,10 @@
 *     05_figure1.do          图 1：断裂比例月度变化
 *     06_event_study.do      附图 1：平行趋势检验
 *     07_types.do            三大类：主表四列
+*     08_types_desc.do       三大类各自断了多少（描述统计）：存续率、数量、月断裂率
+*                            （存续率和数量还要用 full_panel 的完整面板，没有时跳过）
 *
-* 只有清洗后的数据时，把下面的 local clean 改成 0，只跑 04-07。
+* 只有清洗后的数据时，把下面的 local clean 改成 0，只跑 04-08。
 * ==========================================================================================
 local clean 1
 
@@ -26,3 +28,4 @@ do "code/04_main_reg.do"
 do "code/05_figure1.do"
 do "code/06_event_study.do"
 do "code/07_types.do"
+do "code/08_types_desc.do"

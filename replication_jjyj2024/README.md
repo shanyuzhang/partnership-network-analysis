@@ -36,7 +36,7 @@ do code/run_all.do
 - **只跑回归和出图**：从 Google Drive 下载清洗好的数据（见 [DATA.md](DATA.md)），把 `analysis_sample.dta`、`panel_monthly.dta` 放进 `data/clean/`，把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，就只运行 04–06。
 - **从原始数据重跑全部**：原始数据按 [DATA.md](DATA.md) 放进 `data/raw/`，`local clean 1` 不变。原始数据放在别处时，新建 `code/00_config_local.do`，在里面改 `RAW_FACTSET`、`RAW_OTHER` 两个路径（这个文件已写进 `.gitignore`，不会上传）。
 
-表和图写到 `output/tables/`、`output/figures/`，日志写到 `output/logs/`。同一个 Stata 会话里换了文件夹再运行时，先 `macro drop REPO`。
+表和图写到 `output/tables/`、`output/figures/`，日志写到 `output/logs/`。每个 do 文件都按当前文件夹设路径，同一个 Stata 会话里换文件夹运行也不会写错地方。
 
 排序时相同值的先后顺序都是固定的（`sort ..., stable`），同一份原始数据重复运行，结果完全相同（已用独立的几次运行核对）。
 
