@@ -1,6 +1,6 @@
 # 数据说明
 
-数据不放在 GitHub 上：清洗好的数据在 Google Drive，原始数据按下面的路径放好即可。
+数据不放在 GitHub 上，清洗好的数据和原始数据都在 Google Drive。原始数据下载后按下面的路径放好即可。
 
 ## 清洗好的数据（Google Drive）
 
@@ -40,9 +40,11 @@
 
 `panel_monthly.dta` 的变量相同，只是没有 `w_` 开头的 10 个。
 
-## 原始数据（不上传）
+## 原始数据（Google Drive 的 raw 文件夹）
 
-默认放在下面的路径。放在别处时，新建 `code/00_config_local.do` 改路径（写法见 `code/00_config.do` 开头的说明）；文件名不同时，在 `code/00_config.do` 里改 `F_REL`、`F_ENT`、`F_WS`、`F_CO`、`F_TRD`、`F_TARIFF`。
+**链接：** https://drive.google.com/drive/folders/1ieybcINamNeTz5V4X50rfG9Mb_jVIqZy
+
+里面的 `factset/`、`other/` 对应下表的 `data/raw/factset/`、`data/raw/other/`。默认放在下面的路径。放在别处时，新建 `code/00_config_local.do` 改路径（写法见 `code/00_config.do` 开头的说明）；文件名不同时，在 `code/00_config.do` 里改 `F_REL`、`F_ENT`、`F_WS`、`F_CO`、`F_TRD`、`F_TARIFF`。
 
 | 放在 | 文件 | 内容 | 用到的字段 |
 |---|---|---|---|

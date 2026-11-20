@@ -1,6 +1,6 @@
 # 数据说明
 
-完整面板不放在 GitHub 上，放在 Google Drive；原始数据与另外两个文件夹是同一批文件。
+完整面板不放在 GitHub 上，放在 Google Drive；原始数据与另外两个文件夹是同一批文件，也在 Drive 上。
 
 ## 完整面板（Google Drive）
 
@@ -111,6 +111,8 @@ Lev、ROA、ATO、Growth 已在 Worldscope 全部公司的 2017 年截面上按 
 | `s_pt_panel`、`s_pt` | partnership_break 的 `panel_monthly.dta`、`analysis_sample.dta` |
 | `s_pt_K`、`s_pt_C`、`s_pt_M` | partnership_break 的 `analysis_K.dta`、`analysis_C.dta`、`analysis_M.dta`（因变量用 `break_K`、`break_C`、`break_M`） |
 
-## 原始数据（不上传）
+## 原始数据（Google Drive 的 raw 文件夹）
+
+**链接：** https://drive.google.com/drive/folders/1ieybcINamNeTz5V4X50rfG9Mb_jVIqZy
 
 与 replication_jjyj2024 是同一批文件，路径和字段见 [../replication_jjyj2024/DATA.md](../replication_jjyj2024/DATA.md)。用到 `relationship.csv` 里 `rel_type` 为 CUSTOMER、SUPPLIER 和以 `PARTNER-` 开头的记录。

@@ -10,8 +10,15 @@
 
 ## 数据
 
-代码在这个仓库里，数据不放在仓库里。清洗好的数据都在 Google Drive 的 `partnership-network-analysis` 文件夹，里面的子文件夹与仓库的文件夹一一对应：
+数据不放在仓库里。清洗好的数据、原始数据和本仓库的快照，都在 Google Drive 的总文件夹 `partnership-network-analysis`：
 
 https://drive.google.com/drive/folders/1hjU2et_KQtK56xQwNDDA7rtqlkjIK7-0
 
-每个文件夹的 `DATA.md` 写了有哪些数据文件、放进 `data/clean/` 后怎样直接跑回归。原始数据（FactSet Revere、Worldscope、CSMAR）不上传。
+| 总文件夹里 | 内容 |
+|---|---|
+| `README.md` | 总说明：三个分析的主要结果、文件结构、给 AI 的阅读顺序、怎么跑 |
+| `code/` | 本仓库的快照（代码、说明、结果表和图），没有 GitHub 权限也能直接用；对应的提交号写在总说明里 |
+| `replication_jjyj2024/`、`partnership_break/`、`full_panel/` | 清洗好的数据，与仓库的同名文件夹一一对应（各自的链接见上表） |
+| `raw/` | 原始数据：`factset/`（FactSet Revere 关系记录、公司信息）、`other/`（Worldscope、CSMAR、美国加征关税的行业清单），从头重跑清洗时用 |
+
+每个文件夹的 `DATA.md` 写了有哪些数据文件、放进 `data/clean/` 后怎样直接跑回归，以及原始数据放在哪里。

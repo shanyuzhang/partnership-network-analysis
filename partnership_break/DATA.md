@@ -1,6 +1,6 @@
 # 数据说明
 
-数据不放在 GitHub 上：清洗好的数据在 Google Drive，原始数据按下面的路径放好即可。
+数据不放在 GitHub 上，清洗好的数据和原始数据都在 Google Drive。原始数据下载后按下面的路径放好即可。
 
 ## 清洗好的数据（Google Drive）
 
@@ -44,6 +44,8 @@
 
 `analysis_K/C/M.dta` 的变量相同，缩尾在各自的样本上做。`panel_monthly.dta` 没有 `w_`、`post` 开头的财务变量和 `firm_m`。
 
-## 原始数据（不上传）
+## 原始数据（Google Drive 的 raw 文件夹）
+
+**链接：** https://drive.google.com/drive/folders/1ieybcINamNeTz5V4X50rfG9Mb_jVIqZy
 
 与 replication_jjyj2024 是同一批文件，路径和字段见 [../replication_jjyj2024/DATA.md](../replication_jjyj2024/DATA.md)。合作关系用的是 `relationship.csv` 里 `rel_type` 以 `PARTNER-` 开头的记录。
