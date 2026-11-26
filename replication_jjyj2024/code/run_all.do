@@ -11,8 +11,9 @@
 *     04_table2.do           表 1 样本对照、表 2、附表 3
 *     05_figure1.do          图 1：断裂比例月度变化
 *     06_event_study.do      附图 1：平行趋势检验
+*     07_extrapolation.do    表 2 的 Post × Impact 是外推出来的：中心化、固定效应、事件研究
 *
-* 只有清洗后的数据时，把下面的 local clean 改成 0，只跑 04-06。
+* 只有清洗后的数据时，把下面的 local clean 改成 0，只跑 04-07。
 * ==========================================================================================
 local clean 1
 
@@ -24,3 +25,4 @@ if `clean' {
 do "code/04_table2.do"
 do "code/05_figure1.do"
 do "code/06_event_study.do"
+do "code/07_extrapolation.do"

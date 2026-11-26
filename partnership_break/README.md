@@ -8,7 +8,8 @@
 | 主表四列 | `output/tables/main_reg.tex`、`main_reg.csv` |
 | 三大类（知识、资本、市场）：主表四列 | `output/tables/types_main_reg.tex`、`types_main_reg.csv` |
 | 三大类各自断了多少（描述统计） | `output/tables/types_survival.csv`、`types_stock.csv`、`types_batch.csv`、`types_break_rate.csv` |
-| 外推：Post × Impact × X 不中心化时的 Post × Impact | `output/tables/extrap_sizej.tex`、`extrap_sizej.csv`、`extrap_age.csv`、`extrap_bins.csv`、`extrap_grid.csv`、`extrap_paperspec.csv` |
+| 外推：Post × Impact × X 不中心化时的 Post × Impact | `output/tables/extrap_sizej.tex`、`extrap_sizej.csv`、`extrap_age.csv`、`extrap_bins.csv`、`extrap_grid.csv`、`extrap_paperspec.csv`、`extrap_sizej_fe.csv`、`extrap_es.csv` |
+| 外推的图和表格图 | `output/figures/extrap_sig_all.png`、`extrap_sig_types.png`（只画显著的）；`extrap_table1_all.png`、`extrap_table2_types.png`、`extrap_table3_fe_es.png` |
 | 图 1：美国伙伴的月度断裂比例 | `output/figures/figure1_break_share.png`，每月数值在 `output/tables/figure1_break_share.csv` |
 | 附图 1：平行趋势检验 | `output/figures/appendix_figure1_event_study.png`；系数和联合检验在 `output/tables/appendix_figure1_coefs.csv`、`appendix_figure1_tests.csv` |
 
@@ -39,6 +40,8 @@ do code/run_all.do
 - **只跑回归和出图**：从 Google Drive 下载清洗好的数据（见 [DATA.md](DATA.md)），放进 `data/clean/`，把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，只运行 04–09。08 的存续率和数量、09 的伙伴财务指标还要用 full_panel 的完整面板，见 [DATA.md](DATA.md)。
 - **从原始数据重跑全部**：原始数据与 replication_jjyj2024 是同一批文件，按 [DATA.md](DATA.md) 放进 `data/raw/`。放在别处时，新建 `code/00_config_local.do` 改路径（不会上传）。
 
+表格图要在 09 之后另外运行 `python3 code/09b_tables_png.py`（只用 Python 标准库，需要 Google Chrome 截图；Chrome 不在 macOS 默认位置时设环境变量 `CHROME`），表 3 还要读 replication_jjyj2024 的 `07_extrapolation.do` 的输出。
+
 每个 do 文件都按当前文件夹设路径，同一个 Stata 会话里换文件夹运行也不会写错地方。从原始数据完整跑一遍约一分半钟，重复运行的结果完全相同。
 
 ## 文件
@@ -58,6 +61,7 @@ partnership_break/
 │   ├── 07_types.do           三大类的主表四列
 │   ├── 08_types_desc.do      三大类各自断了多少（描述统计）
 │   ├── 09_extrapolation.do   外推：Post × Impact × X
+│   ├── 09b_tables_png.py     外推的三张表格图（PNG），在 09 之后用 Python 运行
 │   └── run_all.do
 └── output/
     ├── tables/
@@ -197,6 +201,28 @@ C 冲击后断得多，但处理组和对照组涨得差不多，所以回归里
 **论文表 2 的写法原样套用**（`extrap_paperspec.csv`）：i、j 各 5 个财务交互项，关系对 + 月份固定效应起依次加固定效应，按关系对聚类，要求 j 的财务指标齐全。全部合作关系四列为 0.0062、0.0078、0.0448、−0.0236，都不显著（p ≥ 0.53）。K 第 (1)(2) 列为 −0.1574（p = 0.057）、−0.1531（p = 0.070）。M 四列为 0.5333、0.4920、0.4235、0.9180（p = 0.047、0.077、0.128、0.054），但只有 18 个处理组关系对，变量都取处理组均值时为 −0.0555（p = 0.015）、−0.0482（p = 0.028）、−0.0238、−0.0126，正的系数全部来自外推。
 
 一共试了 50 个加一个调节变量的回归（`extrap_grid.csv`）和 16 个论文写法的回归。试的写法多了，有一部分会碰巧显著，上面的结果应当这样看。能站得住的只有 Size_j：规模最小的美国伙伴，冲击后与处理组 A 股企业的合作关系断得更少，分段估计也显著；但加企业 × 月固定效应或 A 股企业的财务交互项后不再显著。
+
+**换成论文表 2 的固定效应、做事件研究**（`extrap_sizej_fe.csv`、`extrap_es.csv`，按关系对聚类）。供应链那边的对照见 [../replication_jjyj2024](../replication_jjyj2024/) README 的“外推”一节：论文写法的正效应来自外推，逐列加固定效应也不变，中心化后在 −0.006 到 −0.009 之间。
+
+| Size_j 外推 | (1) 关系对 + 月份 FE | (2) + 行业 × 年 | (3) + A 股企业 × 年 | (4) + 伙伴 × 年 |
+|---|---:|---:|---:|---:|
+| 全部合作关系，不中心化 | −0.0474\*\*\* (0.0170) | −0.0373\*\* (0.0190) | −0.0296 (0.0266) | −0.0468 (0.0303) |
+| 全部合作关系，中心化 | 0.0045 (0.0093) | 0.0078 (0.0100) | 0.0072 (0.0118) | 0.0079 (0.0150) |
+| K，不中心化 | −0.0773\*\*\* (0.0161) | −0.0640\*\*\* (0.0206) | −0.0700\*\*\* (0.0240) | −0.0787\*\*\* (0.0280) |
+| C，不中心化 | −0.0240 (0.0261) | −0.0138 (0.0331) | 0.0263 (0.0479) | −0.0076 (0.0481) |
+| M，不中心化 | −0.1219\*\*\* (0.0414) | −0.0720\* (0.0421) | −0.0417 (0.0414) | −0.0640 (0.0571) |
+
+事件研究（论文式 (2)，同 06；相对月份 × 处理组 × Size_j）：
+
+| 冲击前 p / 冲击后 p | 全部合作关系 | K | C | M |
+|---|---:|---:|---:|---:|
+| 不中心化 | < 0.001 / < 0.001 | < 0.001 / 0.047 | 0.004 / 0.007 | 0.751 / 0.002 |
+| 中心化 | 0.022 / 0.558 | 0.581 / 0.534 | < 0.001 / 0.287 | 0.332 / 0.061 |
+| 不中心化，再加 A 股企业 5 项 | 0.837 / 0.426 | 0.020 / 0.979 | 0.001 / 0.565 | 0.923 / < 0.001 |
+
+全部合作关系不中心化时，冲击前的系数为正（−6 月 0.080、−5 月 0.064），冲击后回到 0 附近，负的 Post × Impact 来自冲击前偏高，不能通过平行趋势检验。供应链的论文写法冲击前能通过（p = 0.506），这里不能：合作关系上没有找到和供应链一样“Post × Impact 显著、事件研究冲击前也干净”的外推。
+
+图和表格图：`extrap_sig_all.png`、`extrap_sig_types.png` 只画 p < 0.10 的 Post × Impact（来自 07 的主表、上面的调节变量和论文写法）；`extrap_table1_all.png`、`extrap_table2_types.png` 是 Size_j 外推里显著的列；`extrap_table3_fe_es.png` 把供应链和合作关系的外推、中心化、事件研究放在一起。
 
 ### 图 1：A 股企业与美国伙伴的月度断裂比例
 

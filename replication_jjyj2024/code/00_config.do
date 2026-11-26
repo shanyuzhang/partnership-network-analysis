@@ -20,7 +20,7 @@ global REPO "`c(pwd)'"
 * ---- 数据和输出的位置 ----
 global RAW_FACTSET "$REPO/data/raw/factset"   // FactSet Revere
 global RAW_OTHER   "$REPO/data/raw/other"     // Worldscope、CSMAR、加征关税行业清单
-global CLEAN       "$REPO/data/clean"         // 01-03 写，04-06 读
+global CLEAN       "$REPO/data/clean"         // 01-03 写，04-07 读
 global OUT         "$REPO/output"
 
 * ---- 原始文件名 ----

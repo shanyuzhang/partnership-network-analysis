@@ -11,6 +11,7 @@
 | 图 1 断裂比例的月度变化 | `output/figures/figure1_break_share.png` | 每月数值在 `output/tables/figure1_break_share.csv` |
 | 附表 3 第 (1)–(4) 列 | `output/tables/appendix_table3.tex`、`appendix_table3.csv` | 第 (4) 列的做法原文未说明，见下文 |
 | 附图 1 平行趋势检验 | `output/figures/appendix_figure1_event_study.png` | 系数在 `output/tables/appendix_figure1_coefs.csv` |
+| （补充）表 2 的 Post × Impact 是外推出来的 | `output/tables/extrapolation.csv`、`extrapolation_decomp.csv`、`extrapolation_es.csv`；`output/figures/extrapolation_event_study.png` | 不是论文的内容，见“外推”一节 |
 
 没有复现：供应链重构部分（Refill、Recover、Transfer 等）、附表 3 第 (5) 列、附表 4、附图 2（安慰剂检验），以及正文里其他的扩展分析。
 
@@ -33,7 +34,7 @@ do code/run_all.do
 
 两种用法：
 
-- **只跑回归和出图**：从 Google Drive 下载清洗好的数据（见 [DATA.md](DATA.md)），把 `analysis_sample.dta`、`panel_monthly.dta` 放进 `data/clean/`，把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，就只运行 04–06。
+- **只跑回归和出图**：从 Google Drive 下载清洗好的数据（见 [DATA.md](DATA.md)），把 `analysis_sample.dta`、`panel_monthly.dta` 放进 `data/clean/`，把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，就只运行 04–07。
 - **从原始数据重跑全部**：原始数据按 [DATA.md](DATA.md) 放进 `data/raw/`，`local clean 1` 不变。原始数据放在别处时，新建 `code/00_config_local.do`，在里面改 `RAW_FACTSET`、`RAW_OTHER` 两个路径（这个文件已写进 `.gitignore`，不会上传）。
 
 表和图写到 `output/tables/`、`output/figures/`，日志写到 `output/logs/`。每个 do 文件都按当前文件夹设路径，同一个 Stata 会话里换文件夹运行也不会写错地方。
@@ -54,13 +55,14 @@ replication_jjyj2024/
 │   ├── 04_table2.do          表 1 对照、表 2、附表 3
 │   ├── 05_figure1.do         图 1
 │   ├── 06_event_study.do     附图 1
+│   ├── 07_extrapolation.do   外推：中心化、固定效应、事件研究
 │   └── run_all.do            按顺序运行全部步骤
 └── output/
     ├── tables/
     └── figures/
 ```
 
-01–03 是全部的数据清洗，04–06 只读清洗好的数据，跑回归和出图。
+01–03 是全部的数据清洗，04–07 只读清洗好的数据，跑回归和出图。
 
 ## 数据清洗
 
@@ -134,7 +136,7 @@ replication_jjyj2024/
 | Break 均值 | 0.0272 | 0.0261 |
 | Impact 均值（关系对层面） | 0.1624 | 0.176 |
 
-控制变量的均值（每家企业算一次）：
+控制变量的均值（这里每家企业算一次；论文表 1 是按企业还是按观测算，原文未说明）：
 
 | | Size | Lev | ROA | ATO | Growth |
 |---|---:|---:|---:|---:|---:|
@@ -180,6 +182,38 @@ replication_jjyj2024/
 ### 附图 1：平行趋势检验
 
 冲击前 5 个系数（p = −6 到 −2）联合为 0 的检验 p = 0.506；冲击后 7 个系数联合为 0 的检验 p = 0.002。最大的系数在冲击后第 4 个月：0.346（标准误 0.110）。论文附图 1 没有给出系数数值；从图上看，论文冲击前的系数都在 0 附近，最大的系数在冲击后第 2 个月，约 0.3。
+
+### 外推：表 2 的 Post × Impact 是什么
+
+由 `07_extrapolation.do` 生成，不是论文的内容。
+
+**一句话：** 表 2 的 Post × Impact 不是平均企业受的冲击，而是 10 个控制变量都等于 0 的企业受的冲击。
+
+- 回归是 Break = a·Post + Σ b·Post × X + FE，X（Size、Lev、ROA、ATO、Growth，两边各 5 个）不中心化，a 就是 X 全为 0 时的效应。
+- Size = 0 是总资产 1000 万美元。处理组冲击后观测里，供应商 Size 均值 4.52（约 9 亿美元），美国客户 8.06（约 320 亿美元），0 远在样本之外。
+- 两个 Size 的 b 都是负的（企业越大，冲击后断得越少），顺着直线外推到 0，a 就被抬高。打个比方：用“身高 0 厘米的人有多重”代表人群的体重。
+
+第 (1) 列的分解（`extrapolation_decomp.csv`）：每一项从处理组均值外推到 0，给 Post × Impact 加上 −b × 均值。客户 Size 加了 0.050，客户 Lev 0.027，供应商 Size 0.021，供应商 ROA 0.014，其余 6 项合计 0.002；一共 0.114，把均值处的 −0.008 变成了 0.107。
+
+**加固定效应挡不住外推。** 把同样的 10 个交互项在处理组冲击后的均值处中心化，模型的拟合不变，Post × Impact 就变成“X 取均值时的效应”：
+
+| | (1) | (2) | (3) | (4) |
+|---|---:|---:|---:|---:|
+| 论文写法（外推到 X = 0） | 0.1067\*\*\* (0.0313) | 0.0858\*\*\* (0.0314) | 0.0628\* (0.0327) | 0.1138\*\*\* (0.0432) |
+| 中心化 | −0.0076\* (0.0044) | −0.0056 (0.0045) | −0.0080\* (0.0044) | −0.0085 (0.0063) |
+| 不加交互项 | −0.0090\*\* (0.0043) | −0.0070 (0.0044) | −0.0089\*\* (0.0043) | −0.0079 (0.0064) |
+
+固定效应同表 2，按关系对聚类。四列逐列加固定效应，外推出的正效应都还在；中心化后四列都在 −0.006 到 −0.009 之间。
+
+**事件研究也是外推的。** 附图 1 的论文式 (2) 同样控制不中心化的相对月份 × 特征，系数是 X = 0 处的效应。中心化后（`extrapolation_es.csv`、`extrapolation_event_study.png`）：
+
+| | 冲击前 5 个系数联合为 0 的 p | 冲击后 7 个系数联合为 0 的 p |
+|---|---:|---:|
+| 论文写法（不中心化） | 0.506 | 0.002 |
+| 中心化 | 0.085 | < 0.001 |
+| 不加特征 | 0.085 | < 0.001 |
+
+中心化后冲击前在 10% 水平上就不能通过；冲击后显著的是负系数（+2 月 −0.029），论文写法里 +4 月 0.346 的峰值消失。
 
 ### 差异的可能来源
 

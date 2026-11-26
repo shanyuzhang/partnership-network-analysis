@@ -8,7 +8,7 @@
 
 （它在 Drive 文件夹 `partnership-network-analysis` 下，与本仓库的文件夹一一对应：<https://drive.google.com/drive/folders/1hjU2et_KQtK56xQwNDDA7rtqlkjIK7-0>）
 
-把下载的文件放进本文件夹的 `data/clean/`，再把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，运行 `do code/run_all.do`，就只跑 04–06（表 2、附表 3、图 1、附图 1）。
+把下载的文件放进本文件夹的 `data/clean/`，再把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，运行 `do code/run_all.do`，就只跑 04–07（表 2、附表 3、图 1、附图 1，以及外推的补充分析）。
 
 | 文件 | 内容 | 观测值 × 变量 | 用在 |
 |---|---|---:|---|
