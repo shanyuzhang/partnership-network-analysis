@@ -14,8 +14,10 @@
 *     07_types.do            三大类：主表四列
 *     08_types_desc.do       三大类各自断了多少（描述统计）：存续率、数量、月断裂率
 *                            （存续率和数量还要用 full_panel 的完整面板，没有时跳过）
+*     09_extrapolation.do    外推：Post x Impact x X 不中心化时的 Post x Impact
+*                            （伙伴财务指标取自 full_panel 的完整面板，没有时跳过）
 *
-* 只有清洗后的数据时，把下面的 local clean 改成 0，只跑 04-08。
+* 只有清洗后的数据时，把下面的 local clean 改成 0，只跑 04-09。
 * ==========================================================================================
 local clean 1
 
@@ -29,3 +31,4 @@ do "code/05_figure1.do"
 do "code/06_event_study.do"
 do "code/07_types.do"
 do "code/08_types_desc.do"
+do "code/09_extrapolation.do"

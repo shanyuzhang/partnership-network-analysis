@@ -8,17 +8,17 @@
 
 （它在 Drive 文件夹 `partnership-network-analysis` 下，与本仓库的文件夹一一对应：<https://drive.google.com/drive/folders/1hjU2et_KQtK56xQwNDDA7rtqlkjIK7-0>）
 
-把下载的文件放进本文件夹的 `data/clean/`，再把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，运行 `do code/run_all.do`，就只跑 04–08。
+把下载的文件放进本文件夹的 `data/clean/`，再把 `code/run_all.do` 里的 `local clean 1` 改成 `local clean 0`，运行 `do code/run_all.do`，就只跑 04–09。
 
 | 文件 | 内容 | 观测值 × 变量 | 用在 |
 |---|---|---:|---|
-| `analysis_sample.dta` | 全部合作关系的回归样本：2017m1–2019m12，每对只看 2017 年起的第一段，回归用的变量都已生成 | 42,332 × 39 | 04、06、07、08 |
-| `analysis_K.dta` | 知识类的回归样本 | 18,896 × 39 | 06、07、08 |
-| `analysis_C.dta` | 资本类的回归样本 | 22,860 × 39 | 06、07、08 |
-| `analysis_M.dta` | 市场类的回归样本 | 1,937 × 39 | 06、07、08 |
+| `analysis_sample.dta` | 全部合作关系的回归样本：2017m1–2019m12，每对只看 2017 年起的第一段，回归用的变量都已生成 | 42,332 × 39 | 04、06、07、08、09 |
+| `analysis_K.dta` | 知识类的回归样本 | 18,896 × 39 | 06、07、08、09 |
+| `analysis_C.dta` | 资本类的回归样本 | 22,860 × 39 | 06、07、08、09 |
+| `analysis_M.dta` | 市场类的回归样本 | 1,937 × 39 | 06、07、08、09 |
 | `panel_monthly.dta` | 全部合作关系，2017m1–2020m6 的关系对 × 月面板，已做全部样本筛选，不限第一段 | 50,852 × 28 | 05 |
 
-08 的存续率、数量和整批结束还要用 full_panel 的完整面板 `full_panel.dta`（Drive 的 full_panel 文件夹：<https://drive.google.com/drive/folders/1cwQiVRA47DKtOOs2zknxc6aH7VuUzqvJ>），放进 `../full_panel/data/clean/`。没有这个文件时，08 只输出月断裂率。
+08 的存续率、数量和整批结束还要用 full_panel 的完整面板 `full_panel.dta`（Drive 的 full_panel 文件夹：<https://drive.google.com/drive/folders/1cwQiVRA47DKtOOs2zknxc6aH7VuUzqvJ>），放进 `../full_panel/data/clean/`。没有这个文件时，08 只输出月断裂率。09 从这个文件取伙伴 j 的 2017 年财务指标和每段关系的起始月，没有时跳过。
 
 01、02 生成的 5 个中间文件（`entity.dta`、`successor.dta`、`tariff.dta`、`st_year.dta`、`firm.dta`）与 replication_jjyj2024 的完全相同，Drive 上不重复放，在 replication_jjyj2024 的数据文件夹里：<https://drive.google.com/drive/folders/1-Y3PqGCeSEIBhMWvMW64X74ipz_6Uw58>。
 
