@@ -15,6 +15,7 @@
 *       $OUT/tables/extrap_paperspec.csv                 论文表 2 的写法（i、j 各 5 个交互项）原样套用
 *       $OUT/tables/extrap_sizej_fe.csv                  Size_j 外推用论文表 2 的四列固定效应；中心化、不加交互项对照
 *       $OUT/tables/extrap_es.csv                        Size_j 外推的事件研究（论文式 (2)）
+*       $OUT/tables/extrap_sig_extra.csv                 探索时另外试出的显著结果（只保留 p < 0.10）
 *       $OUT/figures/extrap_sig_all.png、extrap_sig_types.png   只画显著（p < 0.10）的 Post x Impact
 *       表格的 PNG 由 09b_tables_png.py 生成（读这里和 ../replication_jjyj2024 的 07 的输出）
 *
@@ -411,8 +412,60 @@ di as txt _n "===== Size_j 的事件研究：冲击前 / 冲击后联合检验 =
 list grp spec pre_p post_p if k == -6, noobs sepby(grp)
 
 * ==========================================================================================
+* 5b. 探索时另外试出的显著结果（只保留 p < 0.10 的，写进 extrap_sig_extra.csv，也画进下面的图）
+*     论文表 2 的固定效应写法，按关系对聚类；col = 1：关系对 + 月份 FE，col = 4：四列固定效应全加
+*     - 伙伴财务指标齐全的样本（xj = 1，在这个样本上缩尾）：只控制 Size_i；Size_i + Size_j；伙伴 5 项
+*     - 全部合作关系：关系已存在的月数 age、A 股企业伙伴中美国企业的比例 usshr_i（只看 col = 4）
+* ==========================================================================================
+tempname X
+postfile `X' str4 grp str10 src byte col long N double b se p using "$OUT/tables/_extrap_extra.dta", replace
+local fe1 "pid t"
+local fe4 "pid t sic#year focal#year partner#year"
+foreach g in sample K C M {
+    local gn = cond("`g'" == "sample", "ALL", "`g'")
+    use "$CLEAN/analysis_`g'.dta", clear
+    merge m:1 partner using `pj', keep(master match) nogenerate
+    sort pid t
+    keep if xj == 1
+    foreach v in size lev roa ato growth {
+        foreach k in i j {
+            quietly _pctile `v'_`k', p(1 99)
+            gen double v_`v'_`k' = min(max(`v'_`k', r(r1)), r(r2))
+            gen double PX_`v'_`k' = postimpact * v_`v'_`k'
+        }
+    }
+    local c_sizei "PX_size_i"
+    local c_size  "PX_size_i PX_size_j"
+    local c_j5    "PX_size_j PX_lev_j PX_roa_j PX_ato_j PX_growth_j"
+    foreach ct in sizei size j5 {
+        foreach f in 1 4 {
+            quietly reghdfe break postimpact `c_`ct'', absorb(`fe`f'') vce(cluster pid)
+            local pp = 2*ttail(e(df_r), abs(_b[postimpact]/_se[postimpact]))
+            if `pp' < 0.10 post `X' ("`gn'") ("pf_`ct'") (`f') (e(N)) (_b[postimpact]) (_se[postimpact]) (`pp')
+        }
+    }
+}
+use `all', clear
+foreach x in age usshr_i {
+    gen double PX = postimpact * `x'
+    quietly reghdfe break postimpact PX, absorb(`fe4') vce(cluster pid)
+    local pp = 2*ttail(e(df_r), abs(_b[postimpact]/_se[postimpact]))
+    if `pp' < 0.10 post `X' ("ALL") ("pf_`x'") (4) (e(N)) (_b[postimpact]) (_se[postimpact]) (`pp')
+    drop PX
+}
+postclose `X'
+use "$OUT/tables/_extrap_extra.dta", clear
+format b se %9.4f
+format p %6.3f
+di as txt _n "===== 探索时另外试出的显著结果 ====="
+list, noobs sepby(grp)
+export delimited using "$OUT/tables/extrap_sig_extra.csv", replace
+erase "$OUT/tables/_extrap_extra.dta"
+
+* ==========================================================================================
 * 6. 图：只画显著（p < 0.10）的 Post x Impact
-*    来源：07 的三大类主表（types_main_reg.csv）、上面第 1 部分（extrap_grid.csv）、第 2 部分（extrap_paperspec.csv）
+*    来源：07 的三大类主表（types_main_reg.csv）、上面第 1 部分（extrap_grid.csv）、第 2 部分（extrap_paperspec.csv）、
+*    第 5b 部分（extrap_sig_extra.csv）
 * ==========================================================================================
 capture confirm file "$OUT/tables/types_main_reg.csv"
 if !_rc {
@@ -433,6 +486,11 @@ import delimited using "$OUT/tables/extrap_paperspec.csv", clear varnames(1) enc
 keep grp col b se p
 gen str12 src = "paper10"
 append using `gg'
+tempfile hh
+save `hh'
+import delimited using "$OUT/tables/extrap_sig_extra.csv", clear varnames(1) encoding(utf-8)
+keep grp src col b se p
+append using `hh'
 keep if p < 0.10
 * M 的 Size_j 第 (3)(4) 列：三重差分项共线被剔除，两列是同一个回归，只留 (3)
 drop if grp == "M" & src == "size_j" & col == 4
@@ -447,6 +505,11 @@ replace slab = "伙伴规模 Size_j 外推" if src == "size_j"
 replace slab = "关系已存在月数外推" if src == "age"
 replace slab = "论文写法 10 项交互" if src == "paper10"
 replace slab = "主表（不外推）" if src == "main"
+replace slab = "A 股企业规模 Size_i 外推" if src == "pf_sizei"
+replace slab = "Size_i + Size_j 外推" if src == "pf_size"
+replace slab = "伙伴 5 项财务交互" if src == "pf_j5"
+replace slab = "关系已存在月数外推" if src == "pf_age"
+replace slab = "A 股企业美国伙伴占比外推" if src == "pf_usshr_i"
 replace slab = src + " 外推" if slab == ""
 gen str40 clab = ""
 replace clab = "(1) 无固定效应" if src != "paper10" & col == 1
@@ -458,8 +521,10 @@ replace clab = "(1) 关系对 + 月份 FE" if src == "paper10" & col == 1
 replace clab = "(2) + 行业×年 FE" if src == "paper10" & col == 2
 replace clab = "(3) + A 股企业×年 FE" if src == "paper10" & col == 3
 replace clab = "(4) + 伙伴×年 FE" if src == "paper10" & col == 4
+replace clab = "关系对 + 月份 FE" if substr(src, 1, 3) == "pf_" & col == 1
+replace clab = "论文四列 FE 全加" if substr(src, 1, 3) == "pf_" & col == 4
 gen str80 lab = slab + "｜" + clab
-gen byte so = cond(src == "main", 1, cond(src == "size_j", 2, cond(src == "age", 3, cond(src == "paper10", 5, 4))))
+gen byte so = cond(src == "main", 1, cond(src == "size_j", 2, cond(src == "age", 3, cond(src == "paper10", 6, cond(substr(src, 1, 3) == "pf_", 5, 4)))))
 capture program drop _cplot
 program define _cplot
     args g name ttl xt fy
@@ -488,13 +553,13 @@ program define _cplot
     restore
 end
 local xt "Post × Impact：粗线 90% 置信区间，细线 95%"
-_cplot ALL gA "全部合作关系：显著的 Post × Impact（p < 0.10）" "`xt'" "ysize(3.2) xsize(8)"
+_cplot ALL gA "全部合作关系：显著的 Post × Impact（p < 0.10）" "`xt'" "ysize(4.3) xsize(8)"
 graph export "$OUT/figures/extrap_sig_all.png", replace width(2000)
-_cplot K gK "K 知识类" "" "fysize(34)"
-_cplot C gC "C 资本类" "" "fysize(20)"
-_cplot M gM "M 市场类（处理组关系对只有 18–33 个）" "`xt'；三个子图横轴刻度不同" "fysize(46)"
+_cplot K gK "K 知识类" "" ""
+_cplot C gC "C 资本类" "" ""
+_cplot M gM "M 市场类（处理组关系对只有 18–33 个）" "`xt'；三个子图横轴刻度不同" ""
 graph combine gK gC gM, cols(1) imargin(vsmall) graphregion(color(white)) ///
-    title("三大类：显著的 Post × Impact（p < 0.10）", size(small)) xsize(8) ysize(10)
+    title("三大类：显著的 Post × Impact（p < 0.10）", size(small)) xsize(8) ysize(14)
 graph export "$OUT/figures/extrap_sig_types.png", replace width(2000)
 
 erase "$OUT/tables/_extrap_fe.dta"

@@ -8,7 +8,7 @@
 | 主表四列 | `output/tables/main_reg.tex`、`main_reg.csv` |
 | 三大类（知识、资本、市场）：主表四列 | `output/tables/types_main_reg.tex`、`types_main_reg.csv` |
 | 三大类各自断了多少（描述统计） | `output/tables/types_survival.csv`、`types_stock.csv`、`types_batch.csv`、`types_break_rate.csv` |
-| 外推：Post × Impact × X 不中心化时的 Post × Impact | `output/tables/extrap_sizej.tex`、`extrap_sizej.csv`、`extrap_age.csv`、`extrap_bins.csv`、`extrap_grid.csv`、`extrap_paperspec.csv`、`extrap_sizej_fe.csv`、`extrap_es.csv` |
+| 外推：Post × Impact × X 不中心化时的 Post × Impact | `output/tables/extrap_sizej.tex`、`extrap_sizej.csv`、`extrap_age.csv`、`extrap_bins.csv`、`extrap_grid.csv`、`extrap_paperspec.csv`、`extrap_sizej_fe.csv`、`extrap_es.csv`、`extrap_sig_extra.csv` |
 | 外推的图和表格图 | `output/figures/extrap_sig_all.png`、`extrap_sig_types.png`（只画显著的）；`extrap_table1_all.png`、`extrap_table2_types.png`、`extrap_table3_fe_es.png` |
 | 图 1：美国伙伴的月度断裂比例 | `output/figures/figure1_break_share.png`，每月数值在 `output/tables/figure1_break_share.csv` |
 | 附图 1：平行趋势检验 | `output/figures/appendix_figure1_event_study.png`；系数和联合检验在 `output/tables/appendix_figure1_coefs.csv`、`appendix_figure1_tests.csv` |
@@ -220,9 +220,25 @@ C 冲击后断得多，但处理组和对照组涨得差不多，所以回归里
 | 中心化 | 0.022 / 0.558 | 0.581 / 0.534 | < 0.001 / 0.287 | 0.332 / 0.061 |
 | 不中心化，再加 A 股企业 5 项 | 0.837 / 0.426 | 0.020 / 0.979 | 0.001 / 0.565 | 0.923 / < 0.001 |
 
-全部合作关系不中心化时，冲击前的系数为正（−6 月 0.080、−5 月 0.064），冲击后回到 0 附近，负的 Post × Impact 来自冲击前偏高，不能通过平行趋势检验。供应链的论文写法冲击前能通过（p = 0.506），这里不能：合作关系上没有找到和供应链一样“Post × Impact 显著、事件研究冲击前也干净”的外推。
+全部合作关系不中心化时，冲击前的系数为正（−6 月 0.080、−5 月 0.064），冲击后回到 0 附近，负的 Post × Impact 来自冲击前偏高，不能通过平行趋势检验。供应链的论文写法冲击前能通过（p = 0.506），这里全部合作关系、K、C 都不能；只有 M 冲击前能过（p = 0.751，冲击后 p = 0.002），但 M 只有 19 个处理组关系对。
 
-图和表格图：`extrap_sig_all.png`、`extrap_sig_types.png` 只画 p < 0.10 的 Post × Impact（来自 07 的主表、上面的调节变量和论文写法）；`extrap_table1_all.png`、`extrap_table2_types.png` 是 Size_j 外推里显著的列；`extrap_table3_fe_es.png` 把供应链和合作关系的外推、中心化、事件研究放在一起。
+**探索时另外试出的显著结果**（`extrap_sig_extra.csv`，只保留 p < 0.10 的；论文表 2 的固定效应写法，按关系对聚类；前 7 行只用伙伴财务指标齐全的样本，在这个样本上缩尾）：
+
+| 样本 | 交互项（不中心化） | 固定效应 | Post × Impact |
+|---|---|---|---:|
+| M | Size_i | 关系对 + 月份 | 0.3657\*\*\* (0.1310) |
+| M | Size_i | 论文四列全加 | 0.3200\* (0.1705) |
+| M | Size_i、Size_j | 关系对 + 月份 | 0.3671\*\*\* (0.1186) |
+| M | Size_i、Size_j | 论文四列全加 | 0.4273\*\* (0.1799) |
+| M | 伙伴 5 项 | 关系对 + 月份 | −0.1340\* (0.0743) |
+| K | 伙伴 5 项 | 关系对 + 月份 | −0.0665\* (0.0377) |
+| K | 伙伴 5 项 | 论文四列全加 | −0.1141\* (0.0611) |
+| 全部合作关系 | 关系已存在的月数 | 论文四列全加 | 0.0455\* (0.0235) |
+| 全部合作关系 | A 股企业伙伴中美国企业的比例 | 论文四列全加 | 0.0511\* (0.0298) |
+
+M 的正效应来自 A 股企业规模 Size_i 的外推（M 只有 18–19 个处理组关系对）；这些写法试的组合较多，有一部分会碰巧显著。
+
+图和表格图：`extrap_sig_all.png`、`extrap_sig_types.png` 只画 p < 0.10 的 Post × Impact（来自 07 的主表、上面的调节变量、论文写法和探索时另外试出的结果）；`extrap_table1_all.png`、`extrap_table2_types.png` 是 Size_j 外推里显著的列；`extrap_table3_fe_es.png` 把供应链和合作关系的外推、中心化、事件研究放在一起。
 
 ### 图 1：A 股企业与美国伙伴的月度断裂比例
 
